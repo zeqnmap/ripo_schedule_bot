@@ -54,9 +54,9 @@ def broadcast_to_all(message_text=None, photo_path=None, caption=None):
 
 
 if __name__ == '__main__':
-    # broadcast_to_all(message_text="Важное объявление")
+    broadcast_to_all(message_text="Важное объявление")
 
     broadcast_to_all(
-        photo_path="/Users/yaroslavmanko/PycharmProjects/ripo_schedule_bot/IMG_1177.JPG", # путь к фотке, которую нужно отправить
-        caption="Кому нужно — закрепите."
+        photo_path="", # путь к фотке, которую нужно отправить
+        caption=""
     )
