@@ -1,6 +1,7 @@
 import sqlite3
 import telebot
-from config import BOT_TOKEN
+from config import BOT_TOKEN, DB_PATH
+
 
 bot = telebot.TeleBot(BOT_TOKEN)
 
@@ -9,22 +10,22 @@ def broadcast_to_all(message_text=None, photo_path=None, caption=None):
     """
     Рассылает сообщение или фото всем пользователям из БД
 
-    :param message_text: Текст сообщения (если нужно отправить текст)
-    :param photo_path: Путь к фото (если нужно отправить фото)
+    :param message_text: Текст сообщения
+    :param photo_path: Путь к фото
     :param caption: Подпись к фото
     """
     try:
-        with sqlite3.connect('users.db') as conn:
+        with sqlite3.connect(DB_PATH) as conn:
             cursor = conn.cursor()
 
             cursor.execute("SELECT user_id FROM users")
             users = cursor.fetchall()
 
         if not users:
-            print("❌ Нет пользователей в БД")
+            print("Нет пользователей в БД")
             return
 
-        print(f"📢 Начинаю рассылку для {len(users)} пользователей...")
+        print(f"Начинаю рассылку для {len(users)} пользователей...")
 
         success_count = 0
         fail_count = 0
@@ -40,22 +41,22 @@ def broadcast_to_all(message_text=None, photo_path=None, caption=None):
                 success_count += 1
 
             except Exception as e:
-                print(f"❌ Ошибка отправки пользователю {user_id}: {e}")
+                print(f"Ошибка отправки пользователю {user_id}: {e}")
                 fail_count += 1
 
             import time
             time.sleep(0.1)
 
-        print(f"✅ Рассылка завершена: {success_count} успешно, {fail_count} ошибок")
+        print(f"Рассылка завершена: {success_count} успешно, {fail_count} ошибок")
 
     except Exception as e:
-        print(f"🔥 Критическая ошибка рассылки: {e}")
+        print(f"Критическая ошибка рассылки: {e}")
 
 
 if __name__ == '__main__':
-    broadcast_to_all(message_text="Важное объявление")
+    # broadcast_to_all(message_text="Важное объявление")
 
     broadcast_to_all(
-        photo_path="", # путь к фотке, которую нужно отправить
-        caption="Важное фото"
+        photo_path="/Users/yaroslavmanko/PycharmProjects/ripo_schedule_bot/IMG_1177.JPG", # путь к фотке, которую нужно отправить
+        caption="Кому нужно — закрепите."
     )

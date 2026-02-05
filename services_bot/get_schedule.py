@@ -74,7 +74,7 @@ class ScheduleDownloader:
 
     def get_latest_downloaded_file(self) -> str:
         """
-        Возвращает путь к последнему скачанному файлу
+        :return путь к последнему скачанному файлу
         """
         time.sleep(2)
 
@@ -96,7 +96,7 @@ class ScheduleDownloader:
     def cleanup_old_files(self, max_files):
         """
         Удаляет старые файлы, если их больше max_files.
-        Оставляет только max_files самых новых.
+        :param максимальное количество файлов в папке
         """
         try:
             files = [os.path.join(self.download_dir, f) for f in os.listdir(self.download_dir)]
@@ -113,7 +113,7 @@ class ScheduleDownloader:
             for file_path in files_to_delete:
                 try:
                     os.remove(file_path)
-                    logger.info(f"Удалил старый файл: {os.path.basename(file_path)}")
+                    logger.info(f"Старый файл удален: {os.path.basename(file_path)}")
                 except Exception as e:
                     logger.error(f"Не удалось удалить {file_path}: {e}")
 
@@ -129,7 +129,7 @@ class ScheduleDownloader:
             dir_name = os.path.dirname(file_path)
             ext = os.path.splitext(file_path)[1] or '.pdf'
 
-            # Ищем свободное имя
+            # ищет свободное имя
             counter = 1
             while True:
                 if counter == 1:
@@ -142,7 +142,7 @@ class ScheduleDownloader:
                 if not os.path.exists(new_path):
                     os.rename(file_path, new_path)
                     return new_path
-
+                logger.info("Переименовали файл")
                 counter += 1
 
         except Exception as e:
@@ -152,7 +152,7 @@ class ScheduleDownloader:
     def js_click_and_save(self) -> str:
         """
         Функция, которая с помощью selenium тыкает на нужные кнопки.
-        Возвращает путь к скачанному файлу
+        :return путь к скачанному файлу
         """
         downloaded_file_path = None
 
@@ -162,6 +162,7 @@ class ScheduleDownloader:
             self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
             button = self.driver.find_element(By.XPATH,
                        '/html/body/div[1]/div[2]/div/div[2]/div/div[1]/div/div/main/article/div/div/a[2]')
+            logger.info("Тыкнул на кнопку")
 
             button.click()
             time.sleep(1)
@@ -188,6 +189,6 @@ def get_schedule():
         return None
 
 
-if __name__ == "__main__":
-    result_ = get_schedule()
-    print(f"Результат: {result_}")
+# if __name__ == "__main__":
+#     result_ = get_schedule()
+#     print(f"Путь до скаченного файла:\n{result_}")

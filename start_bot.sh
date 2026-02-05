@@ -1,4 +1,4 @@
-cd /root/bot
+echo "Нужно находится в директории бота с существующим виртуальным окружением!"
 
 source venv/bin/activate
 
@@ -11,12 +11,6 @@ echo "Виртуальное окружение активировано"
 echo "Текущая директория: $(pwd)"
 echo "Python путь: $(which python)"
 echo ""
-
-if grep -q "BOT_TOKEN" config.py; then
-    echo "✓ Конфиг найден"
-else
-    echo "Внимание: проверьте config.py!"
-fi
 
 echo "Запуск бота..."
 
