@@ -15,41 +15,34 @@ The bot automates the routine tasks for students — it shows the schedule and i
 ## 🚀 Installation and Running (Locally)
 
 ### Technical Requirements
-1. **Clone the repository**
+1. **Clone the repository:**
    ```bash
-   https://github.com/zeqnmap/RIPO_bot.git
-   cd your-repository
+   https://github.com/zeqnmap/ripo_schedule_bot.git ripo_bot
+   cd ripo_bot
+   ``` 
+2. **Init DB:**
+    ```bash
+   python init_db.py
    ```
 
-2. Python 3.13+
+3. **Create dirs:**
     ```bash
-    python --version
-    ```
-
-3. Create and activate a virtual environment
+   touch logs
+   chmod 666
+   touch downloads_pdf
+   chmod 666
+   ```
+   
+4. **Run your docker container:**
     ```bash
-    python -m venv venv
-    # For Windows:
-    venv\Scripts\activate
-    # For Linux/Mac:
-    source venv/bin/activate
-    ```
-   Or go to settings -> python -> interpreter -> add new interpreter
-
-4. Install dependencies
+   docker compose build --no-cache
+   docker compose up -d
+   ```
+5. **If you want to stop the bot:**
    ```bash
-   pip install -r requirements.txt
+   docker compose down
    ```
 
-5. Set up private data
-   - Get a bot token from @BotFather on Telegram
-   - Create a `.env` file based on the `env.template`
-   - Insert your bot token there
-
-6. Run the bot
-    ```bash
-   python bot.py
-   ```
 
 ---
 
@@ -59,6 +52,7 @@ The bot automates the routine tasks for students — it shows the schedule and i
      - pytelegrambotapi - for working with the Telegram Bot API
      - selenium - for parsing the schedule from the website
      - multithreading - for faster and more optimized work
+     - requests - for download links
 
 ---
 

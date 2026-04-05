@@ -1,0 +1,28 @@
+services:
+  telegram-bot:
+    build: .
+    container_name: ripo_bot
+    networks:
+      - botnet
+    restart: unless-stopped
+    environment:
+      - TZ=Europe/Minsk
+    volumes:
+      - ./logs:/app/logs
+      - ./.env:/app/.env
+      - ./users.db:/app/users.db
+      - ./downloads_pdf:/app/downloads_pdf
+    depends_on:
+      - chrome
+
+  chrome:
+    image: seleniarm/standalone-chromium:latest
+    container_name: chrome
+    restart: unless-stopped
+    shm_size: 2gb
+    networks:
+      - botnet
+
+networks:
+  botnet:
+    driver: bridge

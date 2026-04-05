@@ -27,7 +27,7 @@ def auto_send(bot):
         ''', (user_id, username))
         conn.commit()
         conn.close()
-        bot.reply_to(message, "Добро пожаловать! Здесь будет появляться новое расписание — не отключай уведомления ;)")
+        bot.reply_to(message, "Добро пожаловать! \n\nЗдесь будет появляться новое расписание — не отключай уведомления ;)")
 
     while True:
         current_file = take_new_file()
