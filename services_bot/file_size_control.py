@@ -1,12 +1,13 @@
 import os
 import time
 from typing import Dict, List
+
 from config import FOLDER_PATH
 from services_bot.logger_func import setup_logger
 
 logger = setup_logger("size_control_logger")
 
-FLAG: Dict = {'FLAG': False}
+FLAG: Dict = {"FLAG": False}
 
 
 def take_new_file() -> str:
@@ -35,12 +36,12 @@ def take_new_file() -> str:
 
     if get_size_2 != get_size_1:
         logger.info(f"Взяли новый файл {file2}")
-        FLAG['FLAG'] = True
+        FLAG["FLAG"] = True
         logger.info(f"Статус флага 1 условия изменился на: {FLAG['FLAG']}")
         return file2
 
     else:
         logger.info(f"Взяли последний файл {file2}")
-        FLAG['FLAG'] = False
+        FLAG["FLAG"] = False
         logger.info(f"Статус флага изменился на: {FLAG['FLAG']}")
         return file2

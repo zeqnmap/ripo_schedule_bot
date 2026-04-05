@@ -1,6 +1,8 @@
 import sqlite3
 from typing import List
+
 from config import DB_PATH
+
 
 def take_users_id() -> List[int]:
     """Берет из БД SQLite колонку с id юзеров с помощью SQL запроса"""

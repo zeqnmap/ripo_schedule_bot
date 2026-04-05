@@ -1,12 +1,14 @@
-import sys
 import os
+import sys
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import datetime
 import threading
 import time
-from services_bot.logger_func import setup_logger
+
 from services_bot.get_schedule import get_schedule
+from services_bot.logger_func import setup_logger
 
 logger = setup_logger("time_logger")
 

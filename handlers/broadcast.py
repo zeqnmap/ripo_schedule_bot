@@ -1,7 +1,8 @@
 import sqlite3
-import telebot
-from config import BOT_TOKEN, DB_PATH
 
+import telebot
+
+from config import BOT_TOKEN, DB_PATH
 
 bot = telebot.TeleBot(BOT_TOKEN)
 
@@ -33,7 +34,7 @@ def broadcast_to_all(message_text=None, photo_path=None, caption=None):
         for (user_id,) in users:
             try:
                 if photo_path:
-                    with open(photo_path, 'rb') as photo:
+                    with open(photo_path, "rb") as photo:
                         bot.send_photo(user_id, photo, caption=caption or message_text)
                 else:
                     bot.send_message(user_id, message_text)
@@ -45,6 +46,7 @@ def broadcast_to_all(message_text=None, photo_path=None, caption=None):
                 fail_count += 1
 
             import time
+
             time.sleep(0.1)
 
         print(f"Рассылка завершена: {success_count} успешно, {fail_count} ошибок")
@@ -53,10 +55,7 @@ def broadcast_to_all(message_text=None, photo_path=None, caption=None):
         print(f"Критическая ошибка рассылки: {e}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     broadcast_to_all(message_text="Важное объявление")
 
-    broadcast_to_all(
-        photo_path="", # путь к фотке, которую нужно отправить
-        caption=""
-    )
+    broadcast_to_all(photo_path="", caption="")  # путь к фотке, которую нужно отправить

@@ -1,10 +1,11 @@
-import os
 import logging
+import os
+
 from config import LOGS_DIR
 
 
 class LevelFileHandler(logging.Handler):
-    def __init__(self,  base_name="", logs_dir="logs"):
+    def __init__(self, base_name="", logs_dir="logs"):
         super().__init__()
         self.base_name = base_name
         self.logs_dir = logs_dir
@@ -21,8 +22,8 @@ class LevelFileHandler(logging.Handler):
 
         message = self.format(record)
 
-        with open(filename, 'a', encoding='utf-8') as file:
-            file.write(message + '\n')
+        with open(filename, "a", encoding="utf-8") as file:
+            file.write(message + "\n")
 
 
 def setup_logger(name):
