@@ -1,8 +1,8 @@
-import sqlite3
-
 import telebot
 
-from config import BOT_TOKEN, DB_PATH
+from config import BOT_TOKEN
+from services_bot.database import db
+
 
 bot = telebot.TeleBot(BOT_TOKEN)
 
@@ -15,47 +15,41 @@ def broadcast_to_all(message_text=None, photo_path=None, caption=None):
     :param photo_path: Путь к фото
     :param caption: Подпись к фото
     """
-    try:
-        with sqlite3.connect(DB_PATH) as conn:
-            cursor = conn.cursor()
+    user_ids = db.get_all_user_ids()
 
-            cursor.execute("SELECT user_id FROM users")
-            users = cursor.fetchall()
+    if not user_ids:
+        print("❌ Нет пользователей в БД для рассылки")
+        return
 
-        if not users:
-            print("Нет пользователей в БД")
-            return
+    print(f"🚀 Начинаю рассылку для {len(user_ids)} пользователей...")
 
-        print(f"Начинаю рассылку для {len(users)} пользователей...")
+    success_count = 0
+    blocked_count = 0
+    error_count = 0
 
-        success_count = 0
-        fail_count = 0
+    for user_id in user_ids:
+        try:
+            if photo_path:
+                with open(photo_path, "rb") as photo:
+                    bot.send_photo(
+                        chat_id=user_id,
+                        photo=photo,
+                        caption=caption
+                    )
+            elif message_text:
+                bot.send_message(
+                    chat_id=user_id,
+                    text=message_text
+                )
+            success_count += 1
 
-        for (user_id,) in users:
-            try:
-                if photo_path:
-                    with open(photo_path, "rb") as photo:
-                        bot.send_photo(user_id, photo, caption=caption or message_text)
-                else:
-                    bot.send_message(user_id, message_text)
+        except Exception as e:
+            error_msg = str(e).lower()
+            if "bot_blocked" in error_msg or "chat not found" in error_msg or "user is deactivated" in error_msg:
+                blocked_count += 1
+                print(f"⛔ Пользователь {user_id} заблокировал бота или неактивен")
+            else:
+                error_count += 1
+                print(f"❌ Ошибка при отправке {user_id}: {e}")
 
-                success_count += 1
-
-            except Exception as e:
-                print(f"Ошибка отправки пользователю {user_id}: {e}")
-                fail_count += 1
-
-            import time
-
-            time.sleep(0.1)
-
-        print(f"Рассылка завершена: {success_count} успешно, {fail_count} ошибок")
-
-    except Exception as e:
-        print(f"Критическая ошибка рассылки: {e}")
-
-
-if __name__ == "__main__":
-    broadcast_to_all(message_text="Важное объявление")
-
-    broadcast_to_all(photo_path="", caption="")  # путь к фотке, которую нужно отправить
+    print(f"✅ Рассылка завершена: {success_count} доставлено, {blocked_count} заблокировано/неактивно, {error_count} других ошибок")
