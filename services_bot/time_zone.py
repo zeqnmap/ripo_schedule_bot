@@ -21,7 +21,7 @@ def launch_control_get_schedule():
     while True:
         current_time = datetime.datetime.now().time()
 
-        if datetime.time(7, 50) <= current_time < datetime.time(19, 0):
+        if datetime.time(7, 50) <= current_time < datetime.time(11, 30):
             logger.info(f"Запуск обновления расписания запущен в {current_time}")
             get_schedule()
             time.sleep(300)
