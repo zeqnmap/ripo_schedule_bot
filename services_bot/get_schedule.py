@@ -124,7 +124,7 @@ class ScheduleDownloader:
             )
             button = self.driver.find_element(
                 By.XPATH,
-                "/html/body/div[1]/div[2]/div/div[2]/div/div[1]/div/div/main/article/div/div/a[2]",
+                "/html/body/div[1]/div[2]/div/div[2]/div/div[1]/div/div/main/article/div/div/a",
             )
             file_url = button.get_attribute("href")
             if not file_url:
