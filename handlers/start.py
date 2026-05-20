@@ -48,15 +48,37 @@ def auto_send(bot):
 
         if FLAG["FLAG"]:
             logger.info("FLAG == True --> начинаем рассылку")
-            for user_id_ in db.get_all_user_ids():
-                try:
-                    with open(current_file, "rb") as file:
-                        bot.send_document(
-                            chat_id=user_id_,
-                            document=file,
-                            caption="📅 Новое расписание"
-                        )
+
+            user_ids = db.get_all_user_ids()
+
+            file_id = None
+
+            with open(current_file, "rb") as file:
+                for user_id_ in user_ids:
+                    try:
+                        if file_id is None:
+                            msg = bot.send_document(
+                                chat_id=user_id_,
+                                document=file,
+                                caption="📅 Новое расписание"
+                            )
+                            file_id = msg.document.file_id
+                        else:
+                            bot.send_document(
+                                chat_id=user_id_,
+                                document=file_id,
+                                caption="📅 Новое расписание"
+                            )
+
                         time.sleep(0.1)
-                except Exception as e:
-                    logger.error(f"Ошибка отправки {user_id_}: {e}")
+
+                    except Exception as e:
+                        error_text = str(e).lower()
+                        logger.error(f"Ошибка отправки {user_id_}: {e}")
+
+                        if "forbidden" in error_text or "bot was blocked" in error_text or "upgraded to a supergroup" in error_text:
+                            logger.info(f"Удаляем пользователя {user_id_} из БД.")
+                            db.delete_user(user_id_)
+
             logger.info("Рассылка завершена")
+            time.sleep(15)

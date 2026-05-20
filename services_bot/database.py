@@ -43,4 +43,16 @@ class Database:
                 (username, user_id)
             )
 
+    def delete_user(self, user_id: int) -> bool:
+        """Удаляет пользователя из БД, если он заблокировал бота"""
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                cursor = conn.cursor()
+                cursor.execute("DELETE FROM users WHERE user_id = ?", (user_id,))
+                conn.commit()
+                return cursor.rowcount > 0
+        except Exception as e:
+            print(f"Ошибка при удалении пользователя {user_id}: {e}")
+            return False
+
 db = Database()

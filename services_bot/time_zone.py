@@ -22,17 +22,14 @@ def launch_control_get_schedule():
         current_time = datetime.datetime.now().time()
 
         if datetime.time(7, 50) <= current_time < datetime.time(11, 30):
-            logger.info(f"Запуск обновления расписания запущен в {current_time}")
             get_schedule()
             time.sleep(300)
 
         elif datetime.time(21, 0) <= current_time < datetime.time(22, 0):
-            logger.info(f"Запуск обновления расписания запущен в {current_time}")
             get_schedule()
             time.sleep(300)
 
         elif datetime.time(6, 30) <= current_time < datetime.time(7, 30):
-            logger.info(f"Запуск обновления расписания запущен в {current_time}")
             get_schedule()
             time.sleep(300)
 

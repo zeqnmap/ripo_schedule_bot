@@ -28,20 +28,14 @@ def take_new_file() -> str:
     two_latest_files = sorted_folder_path[-2:]
 
     file1, file2 = two_latest_files
-    logger.info(f"Последние созданные два файла в папке: {file1}, {file2}")
 
     get_size_1 = os.path.getsize(file1)
     get_size_2 = os.path.getsize(file2)
-    logger.info(f"Размер первого: {get_size_1}, Размер второго:{get_size_2}")
 
     if get_size_2 != get_size_1:
-        logger.info(f"Взяли новый файл {file2}")
         FLAG["FLAG"] = True
-        logger.info(f"Статус флага 1 условия изменился на: {FLAG['FLAG']}")
         return file2
 
     else:
-        logger.info(f"Взяли последний файл {file2}")
         FLAG["FLAG"] = False
-        logger.info(f"Статус флага изменился на: {FLAG['FLAG']}")
         return file2

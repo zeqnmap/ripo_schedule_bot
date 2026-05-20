@@ -9,7 +9,6 @@ logger = setup_logger("last_schedule")
 def register_last_schedule_handler(bot: telebot.TeleBot):
     @bot.message_handler(commands=['schedule'])
     def send_latest_schedule(message):
-        logger.info(f"Пользователь {message.chat.id} запросил последнее расписание")
 
         if not os.path.exists(FOLDER_PATH):
             bot.reply_to(message, "📁 Папка с расписанием не найдена.")
