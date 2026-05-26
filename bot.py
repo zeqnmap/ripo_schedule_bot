@@ -29,4 +29,7 @@ if __name__ == "__main__":
     time_thread.start()
 
     print("Бот запущен...")
-    bot.polling(non_stop=True)
+    try:
+        bot.polling(non_stop=True)
+    except Exception as error:
+        logger.error(f"ERROR: {error}")
